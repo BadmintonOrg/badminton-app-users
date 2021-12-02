@@ -1,0 +1,16 @@
+kumuluzee:
+  name: badmiton-app-users-service
+  env:
+    name: dev
+  version: 1.0.0
+  server:
+    base-url: http://localhost:8080
+    http:
+      port: 8080
+  datasources:
+    - jndi-name: jdbc/BadmintonAppUsersDS
+      connection-url:  ${{ secrets.AWS_DATABASE }}
+      username:  ${{ secrets.POST_NAME }}
+      password:  ${{ secrets.POST_PASS }}
+rest-properties:
+  maintenance-mode: false
