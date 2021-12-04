@@ -35,5 +35,5 @@ jobs:
       uses: docker/build-push-action@v2
       with:
         file: ./Dockerfile_with_maven_build
-        push: false
+        push: true
         tags: rso/badminton-app-users:${{ steps.time.outputs.time }}
