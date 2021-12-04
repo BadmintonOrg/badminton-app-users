@@ -36,4 +36,4 @@ jobs:
       with:
         file: ./Dockerfile_with_maven_build
         push: true
-        tags: rso/badminton-app-users:${{ steps.time.outputs.time }}
+        tags: jbozic04/badminton-app-users:${{ steps.time.outputs.time }}
