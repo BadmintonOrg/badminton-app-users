@@ -9,8 +9,8 @@ kumuluzee:
       port: 8080
   datasources:
     - jndi-name: jdbc/BadmintonAppUsersDS
-      connection-url:  ${{ secrets.AWS_DATABASE }}
-      username:  ${{ secrets.POST_NAME }}
-      password:  ${{ secrets.POST_PASS }}
+      connection-url: jdbc:postgresql://database-1.ctekqcytce4y.eu-central-1.rds.amazonaws.com/badminton
+      username: postgres
+      password: postgres
 rest-properties:
   maintenance-mode: false
