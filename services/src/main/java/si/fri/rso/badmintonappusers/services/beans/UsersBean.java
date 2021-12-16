@@ -9,6 +9,7 @@ import si.fri.rso.badmintonappusers.models.entities.UsersEntity;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.ws.rs.NotFoundException;
 import javax.ws.rs.core.UriInfo;
 import java.util.List;
 import java.util.logging.Logger;
@@ -32,5 +33,98 @@ public class UsersBean {
                 .map(UserConverter::toDto).collect(Collectors.toList());
     }
 
-    //TO-DO
+    public User getUser(Integer id) {
+
+        UsersEntity usersEntity = em.find(UsersEntity.class, id);
+
+        if (usersEntity == null) {
+            throw new NotFoundException();
+        }
+
+        User comm = UserConverter.toDto(usersEntity);
+
+        return comm;
+    }
+
+    public User createUser(User comm) {
+
+        UsersEntity usersEntity = UserConverter.toEntity(comm);
+
+        try {
+            beginTx();
+            em.persist(usersEntity);
+            commitTx();
+        }
+        catch (Exception e) {
+            rollbackTx();
+        }
+
+        if (usersEntity.getId() == null) {
+            throw new RuntimeException("Entity was not persisted");
+        }
+
+        return UserConverter.toDto(usersEntity);
+    }
+
+    public boolean deleteUser(Integer id) {
+
+        UsersEntity comm = em.find(UsersEntity.class, id);
+
+        if (comm != null) {
+            try {
+                beginTx();
+                em.remove(comm);
+                commitTx();
+            }
+            catch (Exception e) {
+                rollbackTx();
+            }
+        }
+        else {
+            return false;
+        }
+
+        return true;
+    }
+
+    public User putUser(Integer id, User comm) {
+
+        UsersEntity c = em.find(UsersEntity.class, id);
+
+        if (c == null) {
+            return null;
+        }
+
+        UsersEntity updatedUserEntity = UserConverter.toEntity(comm);
+
+        try {
+            beginTx();
+            updatedUserEntity.setId(c.getId());
+            updatedUserEntity = em.merge(updatedUserEntity);
+            commitTx();
+        }
+        catch (Exception e) {
+            rollbackTx();
+        }
+
+        return UserConverter.toDto(updatedUserEntity);
+    }
+
+    private void beginTx() {
+        if (!em.getTransaction().isActive()) {
+            em.getTransaction().begin();
+        }
+    }
+
+    private void commitTx() {
+        if (em.getTransaction().isActive()) {
+            em.getTransaction().commit();
+        }
+    }
+
+    private void rollbackTx() {
+        if (em.getTransaction().isActive()) {
+            em.getTransaction().rollback();
+        }
+    }
 }

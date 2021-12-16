@@ -13,7 +13,7 @@ public class UserConverter {
         dto.setSurname(entity.getSurname());
         dto.setUserEmail(entity.getEmail());
         dto.setPassword(entity.getPassword());
-        dto.setOrganization(OrganizationConverter.toDto(entity.getOrganization()));
+        dto.setOrganization(entity.getOrganizationId());
         return dto;
 
     }
@@ -26,7 +26,7 @@ public class UserConverter {
         entity.setEmail(dto.getUserEmail());
         entity.setPassword(dto.getPassword());
         entity.setId(dto.getUserId());
-        entity.setOrganization(OrganizationConverter.toEntity(dto.getOrganization()));
+        entity.setOrganizationId(dto.getOrganization());
         return entity;
 
     }

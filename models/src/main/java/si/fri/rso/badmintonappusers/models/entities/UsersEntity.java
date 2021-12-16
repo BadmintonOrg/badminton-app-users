@@ -27,16 +27,15 @@ public class UsersEntity {
     @Column(name = "password")
     private String password;
 
-    @ManyToOne
-    @JoinColumn(name="organization_id")
-    private OrganizationEntity organization;
+    @Column(name = "organization_id")
+    private Integer organizationId;
 
-    public OrganizationEntity getOrganization() {
-        return organization;
+    public Integer getOrganizationId() {
+        return organizationId;
     }
 
-    public void setOrganization(OrganizationEntity organization) {
-        this.organization = organization;
+    public void setOrganizationId(Integer organizationId) {
+        this.organizationId = organizationId;
     }
 
     public Integer getId() {

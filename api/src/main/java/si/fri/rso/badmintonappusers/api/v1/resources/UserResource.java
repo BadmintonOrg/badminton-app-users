@@ -5,10 +5,7 @@ import si.fri.rso.badmintonappusers.services.beans.UsersBean;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -37,54 +34,40 @@ public class UserResource {
 
         return Response.status(Response.Status.OK).entity(user).build();
     }
-/*
+
     @GET
-    @Path("/{imageMetadataId}")
-    public Response getImageMetadata(@PathParam("imageMetadataId") Integer imageMetadataId) {
+    @Path("/{userId}")
+    public Response getUser(@PathParam("userId") Integer userId) {
 
-        ImageMetadata imageMetadata = usersBean.getImageMetadata(imageMetadataId);
+        User comm = usersBean.getUser(userId);
 
-        if (imageMetadata == null) {
+        if (comm == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
 
-        return Response.status(Response.Status.OK).entity(imageMetadata).build();
+        return Response.status(Response.Status.OK).entity(comm).build();
     }
 
     @POST
-    public Response createImageMetadata(ImageMetadata imageMetadata) {
+    public Response createUser(User comm) {
 
-        if ((imageMetadata.getTitle() == null || imageMetadata.getDescription() == null || imageMetadata.getUri() == null)) {
+
+        if (comm.getOrganization() == null || comm.getName() == null || comm.getPassword() == null || comm.getUserEmail() == null || comm.getSurname() == null) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
         else {
-            imageMetadata = usersBean.createImageMetadata(imageMetadata);
+            comm = usersBean.createUser(comm);
         }
 
-        return Response.status(Response.Status.CONFLICT).entity(imageMetadata).build();
-
-    }
-
-    @PUT
-    @Path("{imageMetadataId}")
-    public Response putImageMetadata(@PathParam("imageMetadataId") Integer imageMetadataId,
-                                     ImageMetadata imageMetadata) {
-
-        imageMetadata = usersBean.putImageMetadata(imageMetadataId, imageMetadata);
-
-        if (imageMetadata == null) {
-            return Response.status(Response.Status.NOT_FOUND).build();
-        }
-
-        return Response.status(Response.Status.NOT_MODIFIED).build();
+        return Response.status(Response.Status.CREATED).entity(comm).build();
 
     }
 
     @DELETE
-    @Path("{imageMetadataId}")
-    public Response deleteImageMetadata(@PathParam("imageMetadataId") Integer imageMetadataId) {
+    @Path("{userId}")
+    public Response deleteUser(@PathParam("userId") Integer userId){
 
-        boolean deleted = usersBean.deleteImageMetadata(imageMetadataId);
+        boolean deleted = usersBean.deleteUser(userId);
 
         if (deleted) {
             return Response.status(Response.Status.NO_CONTENT).build();
@@ -93,5 +76,19 @@ public class UserResource {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
     }
- */
+
+    @PUT
+    @Path("{userId}")
+    public Response putUser(@PathParam("userId") Integer userId,
+                               User comm){
+
+        comm = usersBean.putUser(userId, comm);
+
+        if (comm == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+
+        return Response.status(Response.Status.NOT_MODIFIED).build();
+
+    }
 }

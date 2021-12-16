@@ -4,7 +4,6 @@
         <non-jta-data-source>jdbc/BadmintonAppUsersDS</non-jta-data-source>
 
         <class>si.fri.rso.badmintonappusers.models.entities.UsersEntity</class>
-        <class>si.fri.rso.badmintonappusers.models.entities.OrganizationEntity</class>
 
         <properties>
             <property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>
