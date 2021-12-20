@@ -1,5 +1,14 @@
 package si.fri.rso.badmintonappusers.api.v1.resources;
 
+import org.eclipse.microprofile.openapi.annotations.Operation;
+import org.eclipse.microprofile.openapi.annotations.enums.SchemaType;
+import org.eclipse.microprofile.openapi.annotations.headers.Header;
+import org.eclipse.microprofile.openapi.annotations.media.Content;
+import org.eclipse.microprofile.openapi.annotations.media.Schema;
+import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
+import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
 import si.fri.rso.badmintonappusers.lib.User;
 import si.fri.rso.badmintonappusers.services.beans.UsersBean;
 
@@ -27,6 +36,13 @@ public class UserResource {
     @Context
     protected UriInfo uriInfo;
 
+    @Operation(description = "Get all users in a list", summary = "Get all users")
+    @APIResponses({
+            @APIResponse(responseCode = "200",
+                    description = "List of users",
+                    content = @Content(schema = @Schema(implementation = User.class, type = SchemaType.ARRAY)),
+                    headers = {@Header(name = "X-Total-Count", description = "Number of objects in list")}
+            )})
     @GET
     public Response getUsers() {
 
@@ -35,9 +51,17 @@ public class UserResource {
         return Response.status(Response.Status.OK).entity(user).build();
     }
 
+    @Operation(description = "Get data for a user.", summary = "Get data for a user")
+    @APIResponses({
+            @APIResponse(responseCode = "200",
+                    description = "User",
+                    content = @Content(
+                            schema = @Schema(implementation = User.class))
+            )})
     @GET
     @Path("/{userId}")
-    public Response getUser(@PathParam("userId") Integer userId) {
+    public Response getUser(@Parameter(description = "User ID.", required = true)
+                                @PathParam("userId") Integer userId) {
 
         User comm = usersBean.getUser(userId);
 
@@ -48,8 +72,18 @@ public class UserResource {
         return Response.status(Response.Status.OK).entity(comm).build();
     }
 
+    @Operation(description = "Add user.", summary = "Add user")
+    @APIResponses({
+            @APIResponse(responseCode = "201",
+                    description = "User successfully added."
+            ),
+            @APIResponse(responseCode = "405", description = "Validation error .")
+    })
     @POST
-    public Response createUser(User comm) {
+    public Response createUser(@RequestBody(
+            description = "DTO object with user data.",
+            required = true, content = @Content(
+            schema = @Schema(implementation = User.class))) User comm) {
 
 
         if (comm.getOrganization() == null || comm.getName() == null || comm.getPassword() == null || comm.getUserEmail() == null || comm.getSurname() == null) {
@@ -63,9 +97,21 @@ public class UserResource {
 
     }
 
+    @Operation(description = "Delete user.", summary = "Delete user")
+    @APIResponses({
+            @APIResponse(
+                    responseCode = "200",
+                    description = "User successfully deleted."
+            ),
+            @APIResponse(
+                    responseCode = "404",
+                    description = "Not found."
+            )
+    })
     @DELETE
     @Path("{userId}")
-    public Response deleteUser(@PathParam("userId") Integer userId){
+    public Response deleteUser(@Parameter(description = "User ID.", required = true)
+                                   @PathParam("userId") Integer userId){
 
         boolean deleted = usersBean.deleteUser(userId);
 
@@ -77,10 +123,21 @@ public class UserResource {
         }
     }
 
+    @Operation(description = "Update data for a user.", summary = "Update user")
+    @APIResponses({
+            @APIResponse(
+                    responseCode = "200",
+                    description = "User successfully updated."
+            )
+    })
     @PUT
     @Path("{userId}")
-    public Response putUser(@PathParam("userId") Integer userId,
-                               User comm){
+    public Response putUser(@Parameter(description = "User ID.", required = true)
+                                @PathParam("userId") Integer userId,
+                            @RequestBody(
+                                    description = "DTO object with user data.",
+                                    required = true, content = @Content(
+                                    schema = @Schema(implementation = User.class))) User comm){
 
         comm = usersBean.putUser(userId, comm);
 
