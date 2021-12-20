@@ -13,7 +13,7 @@ spec:
         app: users
     spec:
       containers:
-        - image: jbozic04/badminton-app-users
+        - image: cesarmarti/badminton-app-users
           name: users
           ports:
             - containerPort: 8080

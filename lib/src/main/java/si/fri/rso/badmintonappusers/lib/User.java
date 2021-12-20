@@ -9,6 +9,16 @@ public class User {
     private String password;
     private Integer organizationId;
 
+    private Organization organizationObj;
+
+    public Organization getOrganizationObj() {
+        return organizationObj;
+    }
+
+    public void setOrganizationObj(Organization orgObj) {
+        this.organizationObj = orgObj;
+    }
+
     public Integer getUserId() {
         return userId;
     }
