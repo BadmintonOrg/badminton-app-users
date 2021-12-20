@@ -79,7 +79,7 @@ public class UsersBean {
 
         log.log(Level.INFO,String.valueOf(restProperties.getUserDiscovery()));
         if(target.isPresent()&&restProperties.getUserDiscovery()){
-            Organization org = getOrganizationFromService(id);
+            Organization org = getOrganizationFromService(comm.getOrganization());
             if(org!=null)
                 comm.setOrganizationObj(org);
         }
