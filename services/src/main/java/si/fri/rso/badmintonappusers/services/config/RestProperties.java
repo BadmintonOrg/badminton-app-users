@@ -21,7 +21,7 @@ public class RestProperties {
     }
 
     @ConfigValue(watch = true)
-    private Boolean userDiscovery;
+    private Boolean userDiscovery = true;
 
     private Boolean broken;
 
