@@ -28,7 +28,7 @@
         <kumuluzee-config-mp.version>1.4.1</kumuluzee-config-mp.version>
         <kumuluzee-openapi-mp.version>1.4.0</kumuluzee-openapi-mp.version>
 
-
+        <kumuluzee-fault-tolerance.version>2.1.1</kumuluzee-fault-tolerance.version>
         <httpclient.version>4.5.3</httpclient.version>
         <postgresql.version>42.3.0</postgresql.version>
     </properties>
@@ -47,6 +47,12 @@
                 <groupId>com.kumuluz.ee.rest</groupId>
                 <artifactId>kumuluzee-rest-core</artifactId>
                 <version>${kumuluzee-rest.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.kumuluz.ee.fault.tolerance</groupId>
+                <artifactId>kumuluzee-fault-tolerance-smallrye</artifactId>
+                <version>${kumuluzee-fault-tolerance.version}</version>
             </dependency>
 
             <dependency>
