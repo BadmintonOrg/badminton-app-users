@@ -1,6 +1,7 @@
 package si.fri.rso.badmintonappusers.api.v1.resources;
 
 import com.kumuluz.ee.cors.annotations.CrossOrigin;
+import com.kumuluz.ee.logs.cdi.Log;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.enums.SchemaType;
 import org.eclipse.microprofile.openapi.annotations.headers.Header;
@@ -23,11 +24,12 @@ import javax.ws.rs.core.UriInfo;
 import java.util.List;
 import java.util.logging.Logger;
 
+@Log
 @ApplicationScoped
 @Path("/users")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-@CrossOrigin(supportedMethods = "GET, POST, HEAD, DELETE, OPTIONS")
+@CrossOrigin(supportedMethods = "GET, POST, HEAD, DELETE, OPTIONS, PUT")
 public class UserResource {
 
     private Logger log = Logger.getLogger(UserResource.class.getName());
@@ -48,8 +50,10 @@ public class UserResource {
     @GET
     public Response getUsers() {
 
+        log.info("Get all users.");
         List<User> user = usersBean.getUsers(uriInfo);
 
+        log.info("Returning users.");
         return Response.status(Response.Status.OK).entity(user).build();
     }
 
@@ -65,12 +69,15 @@ public class UserResource {
     public Response getUser(@Parameter(description = "User ID.", required = true)
                                 @PathParam("userId") Integer userId) {
 
+        log.info("Get info for user with id " + userId);
         User comm = usersBean.getUser(userId);
 
         if (comm == null) {
+            log.info("No user found.");
             return Response.status(Response.Status.NOT_FOUND).build();
         }
 
+        log.info("Returning data for user with id " + userId);
         return Response.status(Response.Status.OK).entity(comm).build();
     }
 
@@ -87,14 +94,16 @@ public class UserResource {
             required = true, content = @Content(
             schema = @Schema(implementation = User.class))) User comm) {
 
-
+        log.info("Called method for new user");
         if (comm.getOrganization() == null || comm.getName() == null || comm.getPassword() == null || comm.getUserEmail() == null || comm.getSurname() == null) {
+            log.info("New user not added. Bad request.");
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
         else {
             comm = usersBean.createUser(comm);
         }
 
+        log.info("New user added");
         return Response.status(Response.Status.CREATED).entity(comm).build();
 
     }
@@ -115,12 +124,15 @@ public class UserResource {
     public Response deleteUser(@Parameter(description = "User ID.", required = true)
                                    @PathParam("userId") Integer userId){
 
+        log.info("Called method to delete user");
         boolean deleted = usersBean.deleteUser(userId);
 
         if (deleted) {
+            log.info("User not deleted. Bad request.");
             return Response.status(Response.Status.NO_CONTENT).build();
         }
         else {
+            log.info("Deleted user with id " + userId);
             return Response.status(Response.Status.NOT_FOUND).build();
         }
     }
@@ -141,12 +153,15 @@ public class UserResource {
                                     required = true, content = @Content(
                                     schema = @Schema(implementation = User.class))) User comm){
 
+        log.info("Called method to update user");
         comm = usersBean.putUser(userId, comm);
 
         if (comm == null) {
+            log.info("User not updated. Bad request.");
             return Response.status(Response.Status.NOT_FOUND).build();
         }
 
+        log.info("Updated user with id " + userId);
         return Response.status(Response.Status.NOT_MODIFIED).build();
 
     }
