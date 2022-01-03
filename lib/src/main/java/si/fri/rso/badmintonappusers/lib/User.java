@@ -7,7 +7,17 @@ public class User {
     private String surname;
     private String userEmail;
     private String password;
-    private Organization organization;
+    private Integer organizationId;
+
+    private Organization organizationObj;
+
+    public Organization getOrganizationObj() {
+        return organizationObj;
+    }
+
+    public void setOrganizationObj(Organization orgObj) {
+        this.organizationObj = orgObj;
+    }
 
     public Integer getUserId() {
         return userId;
@@ -49,11 +59,11 @@ public class User {
         this.password = password;
     }
 
-    public Organization getOrganization() {
-        return organization;
+    public Integer getOrganization() {
+        return organizationId;
     }
 
-    public void setOrganization(Organization organization) {
-        this.organization = organization;
+    public void setOrganization(Integer organizationId) {
+        this.organizationId = organizationId;
     }
 }
